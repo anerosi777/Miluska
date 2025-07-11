@@ -2,27 +2,55 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Cuenta regresiva para Miluska</title>
-  <link rel="stylesheet" href="style.css"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Para Miluska 💖</title>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Dancing+Script&family=Montserrat:wght@400;700&display=swap">
+  <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <h1>🎉 ¡Cuenta Regresiva para el Cumpleaños de la bella Miluska! 🎂</h1>
-  <div class="contador" id="contador"></div>
-
-  <button onclick="mostrarSorpresa()">🎁 Sorpresas para Miluska</button>
-
-  <div id="sorpresa" style="display: none;">
-    <h2>🌸 Poema para ti:</h2>
-    <p id="poema"></p>
-
-    <h2>🎶 Canción para acompañar tus mañanas</h2>
-    <audio id="player" controls>
-      Tu navegador no soporta el elemento de audio.
+  <div id="pantalla-inicio">
+    <div class="corazones-flotantes"></div>
+    <h1 id="titulo-inicio"></h1>
+    <audio id="audio-bienvenida">
+      <source src="bienvenida.mp3" type="audio/mp3">
     </audio>
+    <button class="btn" onclick="entrarAlMundo()">Ingresa a nuestro mundo ✨</button>
+  </div>
+
+  <div id="contenido-principal" class="container" style="display: none;">
+    <div class="corazones"></div>
+    <h1>Para Mi Miluska 💕</h1>
+    <p class="intro">Esta página la hice con todo mi corazón para recordarte lo especial que eres para mí.</p>
+
+    <button class="btn" onclick="mostrarCarta()">Leer mi carta 💌</button>
+    <div id="carta" class="carta">
+      <p>
+        Miluska, cada detalle de ti me hace sonreír. Tu dulzura, tu risa, tu mirada todo en ti me inspira ternura y alegría. He creado este pequeño espacio para ti, para decirte que desde que llegaste a mi vida, la hiciste más bonita. Quiero construir algo lindo contigo, con respeto, amor y muchas risas.
+        Gracias por existir, gracias por ser tú.
+      </p>
+    </div>
+
+    <button class="btn especial" onclick="mostrarMensaje()">Quieres saber un secreto? ✨</button>
+    <p id="secreto" class="secreto">Tú eres la razón por la que sonrío más últimamente 💗</p>
+
+    <button class="btn" onclick="reproducirCancionAleatoria()">🎵 Cancioncita para hoy</button>
+    <p id="nombre-cancion" class="nombre-cancion"></p>
+    <audio id="reproductor-aleatorio"></audio>
+
+    <button class="btn" onclick="mostrarFormulario()">Déjame un mensaje bonito ✍️</button>
+    <div id="formulario" class="formulario">
+      <h2>Dejémonos mensajes bonitos 💌</h2>
+      <form onsubmit="enviarMensaje(event)">
+        <input type="text" id="nombre" placeholder="Tu nombre" required />
+        <textarea id="mensaje" rows="4" placeholder="Tu mensaje especial..." required></textarea>
+        <input type="file" id="imagen" accept="image/*" />
+        <button type="submit" class="btn especial">Enviar 💝</button>
+      </form>
+      <div id="mensajesEnviados"></div>
+      <button class="btn" onclick="borrarMensajes()">🗑️ Borrar todos los mensajes</button>
+    </div>
   </div>
 
   <script src="script.js"></script>
 </body>
 </html>
-

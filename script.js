@@ -1,47 +1,116 @@
-const fechaCumple = new Date("2025-06-22T00:00:00");
-
-function actualizarContador() {
-  const ahora = new Date();
-  const diferencia = fechaCumple - ahora;
-
-  const dias = Math.floor(diferencia / (1000 * 60 * 60 * 24));
-  const horas = Math.floor((diferencia / (1000 * 60 * 60)) % 24);
-  const minutos = Math.floor((diferencia / (1000 * 60)) % 60);
-  const segundos = Math.floor((diferencia / 1000) % 60);
-
-  document.getElementById("contador").innerHTML =
-    `<strong>${dias}</strong> días, <strong>${horas}</strong> horas, <strong>${minutos}</strong> minutos, <strong>${segundos}</strong> segundos<br>
-    ¡Miluska estas cada vez más cerca de celebrar tu día!, Estoy muy emocionado y esto es un pequeño detalle para que sepas que lo mejor esta por venir 🎈`;
+function entrarAlMundo() {
+  document.getElementById("pantalla-inicio").style.display = "none";
+  document.getElementById("contenido-principal").style.display = "block";
 }
 
-setInterval(actualizarContador, 1000);
-actualizarContador();
+const textoTitulo = "Cargando nuestro rinconcito de cariño dentro de internet 💖";
+let i = 0;
+function escribirTitulo() {
+  if (i < textoTitulo.length) {
+    document.getElementById("titulo-inicio").innerHTML += textoTitulo.charAt(i);
+    i++;
+    setTimeout(escribirTitulo, 60);
+  } else {
+    const audio = document.getElementById("audio-bienvenida");
+    audio.play().catch(() => {
+      console.log("Reproducción automática bloqueada por el navegador.");
+    });
+  }
+}
+window.addEventListener("load", escribirTitulo);
 
-const poemas = [
-  "En tu día celebro tu magia, tu dulzura y tu voz que me abraza.",
-  "Miluska, tu sonrisa enciende el sol y tu risa llena el aire de flores.",
-  "Eres como un poema sin fin, lleno de ternura, fuerza y luz.",
-  "Tu presencia es regalo, tu amor melodía que nunca termina.",
-  "Cada día contigo es un verso nuevo que ilumina el corazón."
-];
+function mostrarCarta() {
+  const carta = document.getElementById("carta");
+  carta.style.display = carta.style.display === "none" ? "block" : "none";
+}
 
-const canciones = [
-  'Abel Pintos - Bailando Con Tu Sombra (Alelí) (Official Audio).mp3',
-  'AIRBAG - Cae el Sol - Video oficial.mp3',
-  'Como Te Extraño.mp3',
-  'Enanitos Verdes - Mariposas.mp3',
-  'Mac Salvador - NECESITO DE TI (Gran Teatro Nacional 2018).mp3',
-  'Tanto Amor.mp3'
-];
+function mostrarMensaje() {
+  document.getElementById("secreto").style.display = "block";
+}
 
-function mostrarSorpresa() {
-  const poemaAleatorio = poemas[Math.floor(Math.random() * poemas.length)];
-  document.getElementById("poema").textContent = poemaAleatorio;
+function mostrarFormulario() {
+  const form = document.getElementById("formulario");
+  form.style.display = form.style.display === "none" ? "block" : "none";
+}
 
-  const cancionAleatoria = canciones[Math.floor(Math.random() * canciones.length)];
-  const reproductor = document.getElementById("player");
-  reproductor.src = cancionAleatoria;
+function enviarMensaje(event) {
+  event.preventDefault();
+  const nombre = document.getElementById("nombre").value;
+  const mensaje = document.getElementById("mensaje").value;
+  const imagen = document.getElementById("imagen").files[0];
+
+  const contenedor = document.getElementById("mensajesEnviados");
+  const nuevoMensaje = document.createElement("div");
+  nuevoMensaje.className = "mensaje-guardado";
+  nuevoMensaje.innerHTML = `<strong>${nombre}</strong>: ${mensaje}`;
+
+  if (imagen) {
+    const reader = new FileReader();
+    reader.onload = function(e) {
+      const img = document.createElement("img");
+      img.src = e.target.result;
+      img.style.maxWidth = "100px";
+      img.style.display = "block";
+      nuevoMensaje.appendChild(img);
+      guardarMensaje(nombre, mensaje, e.target.result);
+    };
+    reader.readAsDataURL(imagen);
+  } else {
+    guardarMensaje(nombre, mensaje, null);
+  }
+  contenedor.appendChild(nuevoMensaje);
+  document.getElementById("nombre").value = "";
+  document.getElementById("mensaje").value = "";
+  document.getElementById("imagen").value = "";
+}
+
+function guardarMensaje(nombre, mensaje, imagen) {
+  const mensajes = JSON.parse(localStorage.getItem("mensajesMiluska") || "[]");
+  mensajes.push({ nombre, mensaje, imagen });
+  localStorage.setItem("mensajesMiluska", JSON.stringify(mensajes));
+}
+
+function borrarMensajes() {
+  if (confirm("¿Estás seguro de borrar todos los mensajes?")) {
+    localStorage.removeItem("mensajesMiluska");
+    document.getElementById("mensajesEnviados").innerHTML = "";
+  }
+}
+
+window.addEventListener("load", () => {
+  const mensajes = JSON.parse(localStorage.getItem("mensajesMiluska") || "[]");
+  const contenedor = document.getElementById("mensajesEnviados");
+  mensajes.forEach(({ nombre, mensaje, imagen }) => {
+    const msg = document.createElement("div");
+    msg.className = "mensaje-guardado";
+    msg.innerHTML = `<strong>${nombre}</strong>: ${mensaje}`;
+    if (imagen) {
+      const img = document.createElement("img");
+      img.src = imagen;
+      img.style.maxWidth = "100px";
+      img.style.display = "block";
+      msg.appendChild(img);
+    }
+    contenedor.appendChild(msg);
+  });
+});
+
+function reproducirCancionAleatoria() {
+  const canciones = [
+    { archivo: "2.mp3", nombre: "Miluskita hermosa" },
+    { archivo: "3.mp3", nombre: "Miluskita bella" },
+    { archivo: "5.mp3", nombre: "Miluskita superbonita" },
+    { archivo: "6.mp3", nombre: "Miluskita supermamá" },
+    { archivo: "7.mp3", nombre: "Miluskita mi futura novia" },
+    { archivo: "8.mp3", nombre: "Miluskita la niña de hermosa sonrisa" },
+    { archivo: "9.mp3", nombre: "Miluskita la ingeniera más bella" },
+      { archivo: "10.mp3", nombre: "Miluskita mi futura esposa" }
+  ];
+  const indice = Math.floor(Math.random() * canciones.length);
+  const cancion = canciones[indice];
+  const reproductor = document.getElementById("reproductor-aleatorio");
+  const nombreCancion = document.getElementById("nombre-cancion");
+  reproductor.src = cancion.archivo;
   reproductor.play();
-
-  document.getElementById("sorpresa").style.display = "block";
+  nombreCancion.textContent = `🎶 Sonando: ${cancion.nombre}`;
 }
